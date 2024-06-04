@@ -1,0 +1,16 @@
+{
+    "user": {
+        "name": "Sérgio"
+    },
+    "model": {
+        "name": "Gangsta Math Tutor",
+        "tools": [
+            {
+                "type": "code_interpreter"
+            }
+        ],
+        "temperature": 1.2,
+        "top_p": 0.5,
+        "model": "gpt-4o"
+    }
+}
