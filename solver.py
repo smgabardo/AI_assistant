@@ -6,18 +6,18 @@ from rich import print as rprint
 
 client = OpenAI()
 
+# solver.json as a dictionary
+settings = load(open('Solver/solver.json'))
+model_settings = settings["model"]
+
 # Define the quit commands
-quit_commands = ["exit", "quit", "goodbye", "q"]
-clear_commands = ["clear", "clr", "cls"]
+quit_commands = settings["model"]["quit_commands"]
+clear_commands = settings["model"]["commands"]["clear_commands"]
 formatted_quit_commands = ', '.join([f'!{cmd}' for cmd in quit_commands[:-1]]) + f', or !{quit_commands[-1]}'
 
 def clear_terminal():
     pathname = '/Users/sergiogabardo/actual api testing'
     system(f'cd "{pathname}" && clear')
-
-# solver.json as a dictionary
-settings = load(open('Solver/solver.json'))
-assistant_settings = settings["model"]
 
 def format(unformatted_str) -> str:
     term = str(unformatted_str)
@@ -33,11 +33,11 @@ def hyperlink(link: str, visual: str = None) -> str:
 
 try:
     assistant = client.beta.assistants.create(
-        name=assistant_settings["name"],
+        name=model_settings["name"],
         tools=[{"type": "code_interpreter"}],
-        temperature=assistant_settings["temperature"],
-        top_p=assistant_settings["top_p"],
-        model=assistant_settings["model"],
+        temperature=model_settings["temperature"],
+        top_p=model_settings["top_p"],
+        model=model_settings["model"],
     )
 except APIConnectionError as e:
     clear_terminal()
