@@ -1,27 +1,24 @@
 from openai import OpenAI, AssistantEventHandler, APIConnectionError
 from typing_extensions import override
 from os import system
-from json import load
+from json import loads
 from rich import print as rprint
 import requests
 
 client = OpenAI()
 
-# solver.json as a dictionary
-settings = load(open('Solver/solver.json'))
+# Get the raw content of the file from GitHub
+request = requests.get("https://raw.githubusercontent.com/smgabardo/AI_assistant/main/solver.json")
+request.raise_for_status()
+settings = request.json()
 model_settings = settings["model"]
 
-# solver.json as a dictionary
-# Get the raw content of the file from GitHub
-response = requests.get("https://raw.githubusercontent.com/smgabardo/AI_assistant/main/solver.json")
-response.raise_for_status()
-
-# Load the JSON content
-settings = load(response.text)
+print(settings)
+print(type(settings))
 
 # Define the quit commands
-quit_commands = settings["model"]["quit_commands"]
-clear_commands = settings["model"]["commands"]["clear_commands"]
+quit_commands = settings["model"]["commands"]["quit"]
+clear_commands = settings["model"]["commands"]["clear"]
 formatted_quit_commands = ', '.join([f'!{cmd}' for cmd in quit_commands[:-1]]) + f', or !{quit_commands[-1]}'
 
 def clear_terminal():
