@@ -13,9 +13,6 @@ request.raise_for_status()
 settings = request.json()
 model_settings = settings["model"]
 
-print(settings)
-print(type(settings))
-
 # Define the quit commands
 quit_commands = settings["model"]["commands"]["quit"]
 clear_commands = settings["model"]["commands"]["clear"]
@@ -57,7 +54,7 @@ except Exception as e:
 # creates an EventHandler class to define how we want to handle the events in the response stream
 class EventHandler(AssistantEventHandler):
     @override
-    def on_text_created(self, text) -> None:
+    def on_text_created(self, text):
         print(f"\n{assistant.name} > ", end="", flush=True)
 
     @override
