@@ -3,12 +3,21 @@ from typing_extensions import override
 from os import system
 from json import load
 from rich import print as rprint
+import requests
 
 client = OpenAI()
 
 # solver.json as a dictionary
 settings = load(open('Solver/solver.json'))
 model_settings = settings["model"]
+
+# solver.json as a dictionary
+# Get the raw content of the file from GitHub
+response = requests.get("https://raw.githubusercontent.com/smgabardo/AI_assistant/main/solver.json")
+response.raise_for_status()
+
+# Load the JSON content
+settings = load(response.text)
 
 # Define the quit commands
 quit_commands = settings["model"]["quit_commands"]
@@ -39,13 +48,13 @@ try:
         top_p=model_settings["top_p"],
         model=model_settings["model"],
     )
-except APIConnectionError as e:
+except Exception as e:
     clear_terminal()
     base_link = "https://platform.openai.com/docs/guides/error-codes/python-library-error-types"
     match e:
         case APIConnectionError:
             link = base_link + '#:~:text=OVERVIEW-,APIConnectionError,-Cause%3A%20Issue'
-            rprint(f"A {format(e)} ocurred. {hyperlink(link, "Learn more")}")
+            rprint(f"A {format(e)} ocurred. {hyperlink(link, "Learn more")} on {e}.")
     exit(1)
 
 # creates an EventHandler class to define how we want to handle the events in the response stream
