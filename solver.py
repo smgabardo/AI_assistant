@@ -1,7 +1,6 @@
 from openai import OpenAI, AssistantEventHandler, APIConnectionError
 from typing_extensions import override
 from os import system
-from json import loads
 from rich import print as rprint
 import requests
 
