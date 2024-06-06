@@ -7,8 +7,13 @@ import requests
 client = OpenAI()
 
 # Get the raw content of the file from GitHub
-request = requests.get("https://raw.githubusercontent.com/smgabardo/AI_assistant/main/solver.json")
-request.raise_for_status()
+try:
+    request = requests.get("https://raw.githubusercontent.com/smgabardo/AI_assistant/main/solver.json")
+    request.raise_for_status()
+except requests.exceptions.RequestException as e:
+    print(f"An error occurred while making the request: {type(e).__name__}")
+    exit(1)
+
 settings = request.json()
 model_settings = settings["model"]
 
